@@ -1,12 +1,15 @@
-package hello;
+package com.agilent.shipit;
 
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
+//@ComponentScan(basePackages={"com.agilent.shipit"})
+@EnableAutoConfiguration
 public class Application {
 
 	public static void main(String[] args) {
