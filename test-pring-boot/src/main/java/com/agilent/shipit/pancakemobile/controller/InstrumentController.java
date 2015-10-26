@@ -2,6 +2,7 @@ package com.agilent.shipit.pancakemobile.controller;
 
 import java.nio.charset.StandardCharsets;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.http.HTTPException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -46,8 +47,8 @@ public class InstrumentController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public String register(@RequestParam(value = "name") String instrumentName) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public String register(@RequestParam(value = "name") String instrumentName, HttpServletResponse response) {
 		if (dao.countByName(instrumentName) > 0) {
 			throw new HTTPException(HttpStatus.CONFLICT.value());
 		} else {
@@ -55,7 +56,12 @@ public class InstrumentController {
 				Instrument instrument = new Instrument();
 				instrument.setName(instrumentName);
 				instrument.setQrCode(QRCodeUtils.generateQRCodeImage(instrumentName));
-				return "data:image/png;base64," + Base64.encodeBase64String(instrument.getQrCode());
+				
+				response.addHeader("Access-Control-Allow-Origin", "*");
+				
+				JsonObject json = new JsonObject();
+				json.addProperty("qrCode", "data:image/png;base64," + Base64.encodeBase64String(instrument.getQrCode()));
+				return json.toString();
 			} catch (Exception e) {
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			}
