@@ -15,9 +15,9 @@ angular.module('webApp', []).controller('instrumentsController', function($scope
             $http.post($scope.serverURL + '/instrument/register', 'name=' + $scope.newInstrumentName, config)
 					.success(
 						function(data, status, headers, config) {
-                            alert("something");
-                            $scope.instruments.push({name:$scope.newInstrumentName,qrcode:data});  
-        				})
+                            $scope.instruments.push({name:$scope.newInstrumentName,qrcode:data.qrCode});  
+                            console.log(data.qrCode);
+                    	})
 					.error(
 						function(data, status, headers, config) {
 							if (status == 400) {
@@ -25,9 +25,10 @@ angular.module('webApp', []).controller('instrumentsController', function($scope
 							} else {
 								alert("Error :" + status);
 							}
-						});
-
-        
-            $scope.newInstrumentName = "";
+						})
+                    .then(
+                        function() {
+                            $scope.newInstrumentName = "";
+                        });
     }
 });

@@ -23,7 +23,7 @@
             <ul>
                 <li ng-repeat="x in instruments">
                     <div ng-bind="x.name"></div> 
-                    <img ng-bind="x.qrcode"></img>
+                    <img ng-src="{{x.qrcode}}"></img>
                 </li>
             </ul>
             <h2>Ingredients</h2>    
