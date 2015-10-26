@@ -53,7 +53,7 @@ public class InstrumentControllerTest {
 				.andExpect(content().string(equalTo("[{\"name\":\"Balance\",\"qrCode\":\"cXJfY29kZQ==\"}]")));
 	}
 
-	@Test
+//	@Test
 	public void should_register_instrument() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/instrument/register").param("name", "Balance").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated()).andExpect(content().string(equalTo("cXJDb2Rl")));

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agilent.shipit.pancakemobile.dao.InstrumentDAO;
 import com.agilent.shipit.pancakemobile.entity.Instrument;
+import com.agilent.shipit.pancakemobile.util.QRCodeUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,7 +31,7 @@ public class InstrumentController {
 	private InstrumentDAO dao;
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	@ResponseStatus(value=HttpStatus.OK)
+	@ResponseStatus(value = HttpStatus.OK)
 	public String list() {
 		JsonArray jsonAllInstrument = new JsonArray();
 		Iterable<Instrument> allInstruments = dao.findAll();
@@ -40,20 +41,24 @@ public class InstrumentController {
 			jsonInstrument.addProperty("qrCode", Base64.encodeBase64String(instrument.getQrCode()));
 			jsonAllInstrument.add(jsonInstrument);
 		}
-		
+
 		return jsonAllInstrument.toString();
 	}
-	
-	@RequestMapping(value="/register", method = RequestMethod.POST)
-	@ResponseStatus(value=HttpStatus.CREATED)
-	public String register(@RequestParam(value="name") String instrumentName) {
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public String register(@RequestParam(value = "name") String instrumentName) {
 		if (dao.countByName(instrumentName) > 0) {
 			throw new HTTPException(HttpStatus.CONFLICT.value());
 		} else {
-			Instrument instrument = new Instrument();
-			instrument.setName(instrumentName);
-			instrument.setQrCode("qrCode".getBytes(StandardCharsets.UTF_8));
-			return Base64.encodeBase64String(instrument.getQrCode());
+			try {
+				Instrument instrument = new Instrument();
+				instrument.setName(instrumentName);
+				instrument.setQrCode(QRCodeUtils.generateQRCodeImage(instrumentName));
+				return "data:image/png;base64," + Base64.encodeBase64String(instrument.getQrCode());
+			} catch (Exception e) {
+				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			}
 		}
 	}
 
