@@ -2,6 +2,8 @@ package com.agilent.shipit.pancakemobile.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,9 @@ public class IngredientController {
 
 	@RequestMapping(value = "/list", method = GET, produces = "application/json;charset=UTF-8")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String list() {
+	public String list(HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
 		JsonArray jsonList = new JsonArray();
 
 		for (Ingredient ingredient : dao.findAll()) {
@@ -41,7 +45,9 @@ public class IngredientController {
 
 	@RequestMapping(value = "/list/{recipeName}", method = GET, produces = "application/json;charset=UTF-8")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String list(@PathVariable String recipeName) {
+	public String list(@PathVariable String recipeName, HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
 		Recipe recipe = recipeDAO.findOneByName(recipeName);
 
 		JsonArray jsonList = new JsonArray();

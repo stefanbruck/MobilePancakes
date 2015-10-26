@@ -3,7 +3,6 @@ package com.agilent.shipit.pancakemobile.controller;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import com.agilent.shipit.pancakemobile.util.QRCodeUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.zxing.NotFoundException;
 
 @RestController
 @RequestMapping("/recipe")
@@ -38,7 +36,9 @@ public class RecipeController {
 
 	@RequestMapping(value = "/list", method = GET, produces = "application/json;charset=UTF-8")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String list() {
+	public String list(HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
 		JsonArray jsonList = new JsonArray();
 
 		for (Recipe recipe : dao.findAll()) {
@@ -53,14 +53,20 @@ public class RecipeController {
 
 	@RequestMapping(value = "/load", method = POST, produces = "application/json;charset=UTF-8")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String load(@RequestBody String qrCode) throws NotFoundException, IOException {
-		String name = QRCodeUtils.readQRCode(Base64.decodeBase64(qrCode));
-		Recipe recipe = dao.findOneByName(name);
+	public String load(@RequestBody String qrCode, HttpServletResponse response) {
+		try {
+			String name = QRCodeUtils.readQRCode(Base64.decodeBase64(qrCode));
+			Recipe recipe = dao.findOneByName(name);
 
-		JsonObject jsonItem = new JsonObject();
-		jsonItem.addProperty("name", recipe.getName());
-		jsonItem.addProperty("content", recipe.getText());
-		return jsonItem.toString();
+			response.addHeader("Access-Control-Allow-Origin", "*");
+
+			JsonObject jsonItem = new JsonObject();
+			jsonItem.addProperty("name", recipe.getName());
+			jsonItem.addProperty("content", recipe.getText());
+			return jsonItem.toString();
+		} catch (Exception e) {
+			throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
 	}
 
 	@RequestMapping(value = "/save", method = POST)
@@ -69,7 +75,7 @@ public class RecipeController {
 		JsonParser parser = new JsonParser();
 		JsonObject jsonRecipe = parser.parse(payload).getAsJsonObject();
 		String name = jsonRecipe.get("name").getAsString();
-		
+
 		if (dao.countByName(name) > 0) {
 			throw new HTTPException(HttpStatus.CONFLICT.value());
 		} else {
@@ -95,6 +101,7 @@ public class RecipeController {
 				dao.save(recipe);
 
 				response.addHeader("Access-Control-Allow-Origin", "*");
+
 				JsonObject json = new JsonObject();
 				json.addProperty("qrCode", "data:image/png;base64," + recipe.getQrCode());
 				return json.toString();

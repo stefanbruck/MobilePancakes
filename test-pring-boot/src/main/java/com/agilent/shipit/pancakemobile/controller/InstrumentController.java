@@ -27,17 +27,19 @@ public class InstrumentController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String list() {
-		JsonArray jsonAllInstrument = new JsonArray();
+	public String list(HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
+		JsonArray jsonList = new JsonArray();
 		Iterable<Instrument> allInstruments = dao.findAll();
 		for (Instrument instrument : allInstruments) {
-			JsonObject jsonInstrument = new JsonObject();
-			jsonInstrument.addProperty("name", instrument.getName());
-			jsonInstrument.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
-			jsonAllInstrument.add(jsonInstrument);
+			JsonObject jsonItem = new JsonObject();
+			jsonItem.addProperty("name", instrument.getName());
+			jsonItem.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
+			jsonList.add(jsonItem);
 		}
 
-		return jsonAllInstrument.toString();
+		return jsonList.toString();
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -51,9 +53,9 @@ public class InstrumentController {
 				instrument.setName(instrumentName);
 				instrument.setQrCode(Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(instrumentName)));
 				dao.save(instrument);
-				
+
 				response.addHeader("Access-Control-Allow-Origin", "*");
-				
+
 				JsonObject json = new JsonObject();
 				json.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
 				return json.toString();
