@@ -12,20 +12,29 @@
         
         <h1>Welcome to MOBILE PANCAKES</h1>
         <h2>Registered Instruments:</h2>
-        <div ng-app="" ng-init="instruments=[
-            {name:'Kitchen Balance',qrcode:'https://chart.googleapis.com/chart?cht=qr&chl=kitchen%20balance&chs=180x180&choe=UTF-8&chld=L|2'},
-            {name:'Lab Balance',qrcode:''}]">
-        <ul>
-          <li ng-repeat="x	in instruments">
-            <div ng-bind="x.name"></div> 
-              <img ng-src="{{ x.qrcode }}" alt=''></img>
-          </li>
-        </ul>
+        <div ng-app="webApp" ng-controller="instrumentsController">
+            <ul>
+                <li ng-repeat="x in instruments">
+                    <div ng-bind="x.name"></div> 
+                    <img ng-src="{{ x.qrcode }}" alt=''></img>
+                </li>
+            </ul>
             <p>
-                Instrument Description:
-                <input type="text" ng-model="instrument">
-                <button>Register</button>
+                Instrument Name:
+                <input type="text" ng-model="instrumentName">
+                <input type="button" ng-click="registerInstrument()" value="Register" />
             </p>
         </div>
     </body>
+
+    <script>
+        var app = angular.module('webApp', []).controller('instrumentsController', function($scope) {
+            $scope.instrumentName = "Kitchen Balance";
+            $scope.qrCode = 'https://chart.googleapis.com/chart?cht=qr&chl=kitchen%20balance&chs=180x180&choe=UTF-8&chld=L|2';
+            $scope.instruments = [{name:$scope.instrumentName,qrcode:$scope.qrCode}];
+            $scope.registerInstrument = function() {
+                    $scope.instruments.push({name:$scope.instrumentName,qrcode:'https://chart.googleapis.com/chart?cht=qr&chl=kitchen%20balance&chs=180x180&choe=UTF-8&chld=L|2'});    
+            }
+        });
+    </script>
 </html>
