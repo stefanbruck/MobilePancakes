@@ -1,15 +1,11 @@
 package com.agilent.shipit.pancakemobile.controller;
 
-import java.nio.charset.StandardCharsets;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.http.HTTPException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +16,7 @@ import com.agilent.shipit.pancakemobile.dao.InstrumentDAO;
 import com.agilent.shipit.pancakemobile.entity.Instrument;
 import com.agilent.shipit.pancakemobile.util.QRCodeUtils;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @RestController
 @RequestMapping(value = "instrument")

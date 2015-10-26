@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-//@ComponentScan(basePackages={"com.agilent.shipit"})
 @EnableAutoConfiguration
 public class Application {
 
