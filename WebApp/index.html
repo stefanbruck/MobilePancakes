@@ -17,7 +17,8 @@
             {name:'Lab Balance',qrcode:''}]">
         <ul>
           <li ng-repeat="x	in instruments">
-            {{ x.name }} <a rel='nofollow' href='http://www.qrcode-generator.de' border='0' style='cursor:default'><img src='https://chart.googleapis.com/chart?cht=qr&chl=kitchen%20balance&chs=180x180&choe=UTF-8&chld=L|2' alt=''></a>
+            <div ng-bind="x.name"></div> 
+              <img ng-src="{{ x.qrcode }}" alt=''></img>
           </li>
         </ul>
             <p>
