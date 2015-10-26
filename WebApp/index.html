@@ -26,7 +26,8 @@
                     <img ng-src="{{x.qrcode}}"></img>
                 </li>
             </ul>
-            <h2>Ingredients</h2>    
+            <h2>Ingredients</h2>  
+            <input type="button" ng-click="refreshIngredients()" value="Refresh" />
             <ul>
                 <li ng-repeat="x in ingredients">
                     {{ x.amount + " " + x.unit + " " + x.name }}
