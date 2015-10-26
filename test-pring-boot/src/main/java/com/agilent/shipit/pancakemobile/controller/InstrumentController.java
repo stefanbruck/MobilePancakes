@@ -33,7 +33,7 @@ public class InstrumentController {
 		for (Instrument instrument : allInstruments) {
 			JsonObject jsonInstrument = new JsonObject();
 			jsonInstrument.addProperty("name", instrument.getName());
-			jsonInstrument.addProperty("qrCode", Base64.encodeBase64String(instrument.getQrCode()));
+			jsonInstrument.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
 			jsonAllInstrument.add(jsonInstrument);
 		}
 
@@ -49,12 +49,13 @@ public class InstrumentController {
 			try {
 				Instrument instrument = new Instrument();
 				instrument.setName(instrumentName);
-				instrument.setQrCode(QRCodeUtils.generateQRCodeImage(instrumentName));
+				instrument.setQrCode(Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(instrumentName)));
+				dao.save(instrument);
 				
 				response.addHeader("Access-Control-Allow-Origin", "*");
 				
 				JsonObject json = new JsonObject();
-				json.addProperty("qrCode", "data:image/png;base64," + Base64.encodeBase64String(instrument.getQrCode()));
+				json.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
 				return json.toString();
 			} catch (Exception e) {
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());

@@ -16,8 +16,8 @@ public class Instrument {
 	@Column(name = "instrument_name")
 	private String name;
 
-	@Column(name = "qr_code")
-	private byte[] qrCode;
+	@Column(name = "qr_code", length=2000)
+	private String qrCode;
 
 	public Integer getId() {
 		return id;
@@ -35,11 +35,11 @@ public class Instrument {
 		this.name = name;
 	}
 
-	public byte[] getQrCode() {
+	public String getQrCode() {
 		return qrCode;
 	}
 
-	public void setQrCode(byte[] qrCode) {
+	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
 	}
 

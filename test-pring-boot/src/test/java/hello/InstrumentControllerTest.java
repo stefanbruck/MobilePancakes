@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +46,7 @@ public class InstrumentControllerTest {
 	public void should_return_all_instrument() throws Exception {
 		Instrument instrument = new Instrument();
 		instrument.setName("Balance");
-		instrument.setQrCode("qr_code".getBytes(StandardCharsets.UTF_8));
+		instrument.setQrCode(Base64.encodeBase64String("qr_code".getBytes(StandardCharsets.UTF_8)));
 		dao.save(instrument);
 
 		mvc.perform(MockMvcRequestBuilders.get("/instrument/list").accept(MediaType.APPLICATION_JSON))

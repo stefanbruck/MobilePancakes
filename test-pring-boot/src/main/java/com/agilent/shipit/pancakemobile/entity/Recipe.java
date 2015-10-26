@@ -22,8 +22,8 @@ public class Recipe {
 	@Column(name = "recipe_text")
 	private String text;
 
-	@Column(name = "qr_code")
-	private byte[] qrCode;
+	@Column(name = "qr_code", length=2000)
+	private String qrCode;
 
 	@OneToMany
 	@PrimaryKeyJoinColumn(name = "recipe_id")
@@ -53,11 +53,11 @@ public class Recipe {
 		this.text = text;
 	}
 
-	public byte[] getQrCode() {
+	public String getQrCode() {
 		return qrCode;
 	}
 
-	public void setQrCode(byte[] qrCode) {
+	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
 	}
 

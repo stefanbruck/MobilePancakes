@@ -25,6 +25,7 @@ import com.agilent.shipit.pancakemobile.entity.Recipe;
 import com.agilent.shipit.pancakemobile.util.QRCodeUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.zxing.NotFoundException;
 
 @RestController
@@ -43,7 +44,7 @@ public class RecipeController {
 		for (Recipe recipe : dao.findAll()) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", recipe.getName());
-			jsonItem.addProperty("qrCode", Base64.encodeBase64String(recipe.getQrCode()));
+			jsonItem.addProperty("qrCode", "data:image/png;base64," + recipe.getQrCode());
 			jsonList.add(jsonItem);
 		}
 
@@ -64,23 +65,30 @@ public class RecipeController {
 
 	@RequestMapping(value = "/save", method = POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public String save(@RequestBody String name, @RequestBody String content, @RequestBody List<String> ingredients,
-			HttpServletResponse response) {
+	public String save(@RequestBody String payload, HttpServletResponse response) {
+		JsonParser parser = new JsonParser();
+		JsonObject jsonRecipe = parser.parse(payload).getAsJsonObject();
+		String name = jsonRecipe.get("name").getAsString();
+		
 		if (dao.countByName(name) > 0) {
 			throw new HTTPException(HttpStatus.CONFLICT.value());
 		} else {
 			try {
 				Recipe recipe = new Recipe();
 				recipe.setName(name);
-				recipe.setText(content);
-				recipe.setQrCode(QRCodeUtils.generateQRCodeImage(name));
+				recipe.setText("Directions");
+				String encodeBase64String = Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(name));
+				recipe.setQrCode(encodeBase64String);
 
+				JsonArray ingredients = jsonRecipe.get("ingredients").getAsJsonArray();
 				List<Ingredient> list = new ArrayList<Ingredient>();
-				for (String ingredient : ingredients) {
-					Ingredient entity = new Ingredient();
-					entity.setName(ingredient);
-					entity.setQrCode(QRCodeUtils.generateQRCodeImage(ingredient));
-					list.add(ingredientDAO.save(entity));
+				for (int i = 0, iL = ingredients.size(); i < iL; i++) {
+					JsonObject jsonIngredient = ingredients.get(i).getAsJsonObject();
+					Ingredient ingredient = new Ingredient();
+					ingredient.setName(jsonIngredient.get("name").getAsString());
+					String qrCode = Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(ingredient.getName()));
+					ingredient.setQrCode(qrCode);
+					list.add(ingredientDAO.save(ingredient));
 				}
 				recipe.setIngredients(list);
 
@@ -88,9 +96,10 @@ public class RecipeController {
 
 				response.addHeader("Access-Control-Allow-Origin", "*");
 				JsonObject json = new JsonObject();
-				json.addProperty("qrCode", "data:image/png;base64," + Base64.encodeBase64String(recipe.getQrCode()));
+				json.addProperty("qrCode", "data:image/png;base64," + recipe.getQrCode());
 				return json.toString();
 			} catch (Exception e) {
+				e.printStackTrace();
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			}
 		}

@@ -2,7 +2,6 @@ package com.agilent.shipit.pancakemobile.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +32,7 @@ public class IngredientController {
 		for (Ingredient ingredient : dao.findAll()) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", ingredient.getName());
-			jsonItem.addProperty("qrCode", Base64.encodeBase64String(ingredient.getQrCode()));
+			jsonItem.addProperty("qrCode", ingredient.getQrCode());
 			jsonList.add(jsonItem);
 		}
 
@@ -50,7 +49,7 @@ public class IngredientController {
 		for (Ingredient ingredient : dao.findAllByRecipeId(recipe.getId())) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", ingredient.getName());
-			jsonItem.addProperty("qrCode", Base64.encodeBase64String(ingredient.getQrCode()));
+			jsonItem.addProperty("qrCode", ingredient.getQrCode());
 			jsonList.add(jsonItem);
 		}
 
