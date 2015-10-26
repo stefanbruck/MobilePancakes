@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="instrumentsController.js"></script>
 
     <head>
         <meta charset="utf-8">
@@ -21,7 +23,7 @@
             <ul>
                 <li ng-repeat="x in instruments">
                     <div ng-bind="x.name"></div> 
-                    <img ng-src="{{ x.qrcode }}" alt=''></img>
+                    <img ng-bind="x.qrcode"></img>
                 </li>
             </ul>
             <h2>Ingredients</h2>    
@@ -32,6 +34,4 @@
             </ul>
         </div>
     </body>
-
-    <script src="instrumentsController.js"></script>
 </html>
