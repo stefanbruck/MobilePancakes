@@ -9,10 +9,10 @@ import javax.persistence.Id;
 public class Ingredient {
 	@Id
 	@GeneratedValue
-	@Column(name = "intgredient_id")
+	@Column(name = "ingredient_id")
 	private Integer id;
 
-	@Column(name = "intgredient_name")
+	@Column(name = "ingredient_name")
 	private String name;
 
 	@Column(name = "qr_code")
