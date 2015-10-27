@@ -1,7 +1,8 @@
 angular.module('instrumentsController', []);
 angular.module('ingredientsCtrl', []);
+angular.module('recipesCtrl', []);
 
-angular.module('webApp', ['instrumentsController','ingredientsCtrl'])
+angular.module('webApp', ['instrumentsController','ingredientsCtrl','recipesCtrl'])
 .controller('TabsCtrl', ['$scope', function ($scope) {
     $scope.tabs = [{
             title: 'Instruments',

@@ -5,6 +5,7 @@
     <script src="TabsCtrl.js"></script>
     <script src="instrumentsController.js"></script>
     <script src="ingredientsCtrl.js"></script>
+    <script src="recipesCtrl.js"></script>
     
     <head>
         <meta charset="utf-8">
@@ -58,8 +59,23 @@
 
             <script type="text/ng-template" id="two.tpl.html">
                 <div id="viewTwo">
-                    <h1>View Two</h1>
-                    <p>Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit amet arcu. Class aptent taciti sociosqu.</p>
+                    <div ng-controller="recipesCtrl">
+                        <h1>Recipes</h1>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>QR Code</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in recipes">
+                              <td><span ng-bind="x.name"></span></td> 
+                              <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
                 </div>
             </script>
 
