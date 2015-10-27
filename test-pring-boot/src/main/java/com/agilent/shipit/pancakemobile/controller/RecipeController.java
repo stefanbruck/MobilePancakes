@@ -68,7 +68,7 @@ public class RecipeController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public String load(@RequestBody String qrCode, HttpServletResponse response) {
 		try {
-			String name = QRCodeUtils.readQRCode(Base64.decodeBase64(qrCode));
+			String name = extractRecipeName(parseRecipePayload(QRCodeUtils.readQRCode(Base64.decodeBase64(qrCode))));
 			return loadRecipeByName(response, name);
 		} catch (Exception e) {
 			throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -78,9 +78,8 @@ public class RecipeController {
 	@RequestMapping(value = "/save", method = POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public String save(@RequestBody String payload, HttpServletResponse response) {
-		JsonParser parser = new JsonParser();
-		JsonObject jsonRecipe = parser.parse(payload).getAsJsonObject();
-		String name = jsonRecipe.get("name").getAsString();
+		JsonObject jsonRecipe = parseRecipePayload(payload);
+		String name = extractRecipeName(jsonRecipe);
 
 		if (dao.countByName(name) > 0) {
 			throw new HTTPException(HttpStatus.CONFLICT.value());
@@ -115,6 +114,14 @@ public class RecipeController {
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			}
 		}
+	}
+
+	private String extractRecipeName(JsonObject jsonRecipe) {
+		return jsonRecipe.get("name").getAsString();
+	}
+
+	private JsonObject parseRecipePayload(String payload) {
+		return new JsonParser().parse(payload).getAsJsonObject();
 	}
 
 	private String loadRecipeByName(HttpServletResponse response, String name) {
