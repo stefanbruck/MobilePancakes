@@ -49,7 +49,7 @@ public class Ingredient {
 		return recipeId;
 	}
 
-	public void getRecipeId(Integer recipeId) {
+	public void setRecipeId(Integer recipeId) {
 		this.recipeId = recipeId;
 	}
 }

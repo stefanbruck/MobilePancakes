@@ -89,6 +89,7 @@ public class RecipeController {
 				recipe.setName(name);
 				recipe.setText(jsonRecipe.get("content").getAsString());
 				recipe.setQrCode(Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(payload)));
+				dao.save(recipe);
 
 				JsonArray ingredients = jsonRecipe.get("ingredients").getAsJsonArray();
 				List<Ingredient> list = new ArrayList<Ingredient>();
@@ -98,11 +99,10 @@ public class RecipeController {
 					ingredient.setName(jsonIngredient.get("name").getAsString());
 					ingredient.setQrCode(
 							Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(ingredient.getName())));
+					ingredient.setRecipeId(recipe.getId());
 					list.add(ingredientDAO.save(ingredient));
 				}
 				recipe.setIngredients(list);
-
-				dao.save(recipe);
 
 				response.addHeader("Access-Control-Allow-Origin", "*");
 
