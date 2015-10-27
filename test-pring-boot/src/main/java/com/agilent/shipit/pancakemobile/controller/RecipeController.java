@@ -14,6 +14,7 @@ import javax.xml.ws.http.HTTPException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,19 +54,22 @@ public class RecipeController {
 		return jsonList.toString();
 	}
 
+	@RequestMapping(value = "/{recipeName}/load", method = GET, produces = JSON_CONTENT_TYPE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public String loadFromName(@PathVariable String recipeName, HttpServletResponse response) {
+		try {
+			return loadRecipeByName(response, recipeName);
+		} catch (Exception e) {
+			throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+	}
+
 	@RequestMapping(value = "/load", method = POST, produces = JSON_CONTENT_TYPE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public String load(@RequestBody String qrCode, HttpServletResponse response) {
 		try {
 			String name = QRCodeUtils.readQRCode(Base64.decodeBase64(qrCode));
-			Recipe recipe = dao.findOneByName(name);
-
-			response.addHeader("Access-Control-Allow-Origin", "*");
-
-			JsonObject jsonItem = new JsonObject();
-			jsonItem.addProperty("name", recipe.getName());
-			jsonItem.addProperty("content", recipe.getText());
-			return jsonItem.toString();
+			return loadRecipeByName(response, name);
 		} catch (Exception e) {
 			throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
@@ -111,5 +115,17 @@ public class RecipeController {
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			}
 		}
+	}
+
+	private String loadRecipeByName(HttpServletResponse response, String name) {
+		Recipe recipe = dao.findOneByName(name);
+
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
+		JsonObject jsonItem = new JsonObject();
+		jsonItem.addProperty("name", recipe.getName());
+		jsonItem.addProperty("content", recipe.getText());
+
+		return jsonItem.toString();
 	}
 }
