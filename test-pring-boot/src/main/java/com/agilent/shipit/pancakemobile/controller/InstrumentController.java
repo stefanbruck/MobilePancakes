@@ -13,6 +13,7 @@ import javax.xml.ws.http.HTTPException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,6 +87,7 @@ public class InstrumentController {
 
 		InstrumentMeasure measure = new InstrumentMeasure();
 		measure.setInstrument(jsonData.get("instrumentName").getAsString());
+		measure.setIngredient(jsonData.get("ingredientName").getAsString());
 		measure.setValue(jsonData.get("value").getAsString());
 		measure.setTimestamp(Timestamp.from(Instant.now()));
 		measure.setRead(Boolean.FALSE);
@@ -93,14 +95,14 @@ public class InstrumentController {
 		measureDAO.save(measure);
 	}
 
-	@RequestMapping(value = "/readMeasure", method = RequestMethod.GET, produces = JSON_CONTENT_TYPE)
+	@RequestMapping(value = "/readMeasure/{ingredientName}", method = RequestMethod.GET, produces = JSON_CONTENT_TYPE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public String readMeasure(HttpServletResponse response) {
+	public String readMeasure(@PathVariable String ingredientName, HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", "*");
 
 		InstrumentMeasure measure = null;
 
-		List<InstrumentMeasure> measures = measureDAO.findAllByRead(Boolean.FALSE);
+		List<InstrumentMeasure> measures = measureDAO.findAllByReadAndIngredient(Boolean.FALSE, ingredientName);
 		for (InstrumentMeasure m : measures) {
 			if (measure == null || m.getTimestamp().before(measure.getTimestamp())) {
 				measure = m;
@@ -110,6 +112,7 @@ public class InstrumentController {
 		JsonObject jsonItem = new JsonObject();
 		if (measure != null) {
 			jsonItem.addProperty("instrumentName", measure.getInstrument());
+			jsonItem.addProperty("ingredientName", measure.getIngredient());
 			jsonItem.addProperty("value", measure.getValue());
 			jsonItem.addProperty("timestamp", measure.getTimestamp().toString());
 
@@ -118,5 +121,24 @@ public class InstrumentController {
 		}
 
 		return jsonItem.toString();
+	}
+
+	@RequestMapping(value = "/listMeasures", method = RequestMethod.GET, produces = JSON_CONTENT_TYPE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public String listMeasures(HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
+		JsonArray jsonList = new JsonArray();
+		for (InstrumentMeasure measure : measureDAO.findAll()) {
+			JsonObject jsonItem = new JsonObject();
+			jsonItem.addProperty("instrumentName", measure.getInstrument());
+			jsonItem.addProperty("ingredientName", measure.getIngredient());
+			jsonItem.addProperty("value", measure.getValue());
+			jsonItem.addProperty("timestamp", measure.getTimestamp().toString());
+			jsonItem.addProperty("read", Boolean.TRUE.equals(measure.isRead()) ? "Yes" : "No");
+			jsonList.add(jsonItem);
+		}
+
+		return jsonList.toString();
 	}
 }

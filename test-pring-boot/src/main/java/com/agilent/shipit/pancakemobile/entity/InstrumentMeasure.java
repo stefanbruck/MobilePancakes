@@ -17,6 +17,9 @@ public class InstrumentMeasure {
 	@Column(name = "instrument_name")
 	private String instrument;
 
+	@Column(name = "ingredient_name")
+	private String ingredient;
+
 	@Column(name = "value")
 	private String value;
 
@@ -40,6 +43,14 @@ public class InstrumentMeasure {
 
 	public void setInstrument(String instrument) {
 		this.instrument = instrument;
+	}
+
+	public String getIngredient() {
+		return ingredient;
+	}
+
+	public void setIngredient(String ingredient) {
+		this.ingredient = ingredient;
 	}
 
 	public String getValue() {

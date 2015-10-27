@@ -10,4 +10,6 @@ import com.agilent.shipit.pancakemobile.entity.InstrumentMeasure;
 @Repository
 public interface InstrumentMeasureDAO extends CrudRepository<InstrumentMeasure, Integer> {
 	List<InstrumentMeasure> findAllByRead(Boolean read);
+
+	List<InstrumentMeasure> findAllByReadAndIngredient(Boolean read, String ingredient);
 }

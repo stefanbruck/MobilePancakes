@@ -1,8 +1,9 @@
 angular.module('instrumentsController', []);
 angular.module('ingredientsCtrl', []);
 angular.module('recipesCtrl', []);
+angular.module('instrumentMeasuresCtrl', []);
 
-angular.module('webApp', ['instrumentsController','ingredientsCtrl','recipesCtrl'])
+angular.module('webApp', ['instrumentsController','ingredientsCtrl','recipesCtrl','instrumentMeasuresCtrl'])
 .controller('TabsCtrl', ['$scope', function ($scope) {
     $scope.tabs = [{
             title: 'Instruments',
@@ -13,6 +14,9 @@ angular.module('webApp', ['instrumentsController','ingredientsCtrl','recipesCtrl
         }, {
             title: 'Ingredients',
             url: 'three.tpl.html'
+        }, {
+            title: 'Instruments Measures',
+            url: 'four.tpl.html'
     }];
 
     $scope.currentTab = 'one.tpl.html';
