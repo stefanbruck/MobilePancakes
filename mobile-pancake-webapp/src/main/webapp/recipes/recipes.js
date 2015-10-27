@@ -6,7 +6,7 @@ angular.module('mobilePancake')
 		scope: {},
 		templateUrl: 'recipes/recipes.html',
 		link: function($scope) {
-      $http.get('http://localhost:8080/recipe/list')
+      $http.get('http://10.52.4.100:8080/recipe/list')
         .success(
           function(data, status, headers, config) {
             $scope.data = {
