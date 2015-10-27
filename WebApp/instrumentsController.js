@@ -1,10 +1,8 @@
-angular.module('webApp', []).controller('instrumentsController', function($scope, $http) {
+angular.module('instrumentsController', [])
+.controller('instrumentsController', function($scope, $http) {
     $scope.newInstrumentName = "";
-    $scope.newQRCode = 'https://chart.googleapis.com/chart?cht=qr&chl=kitchen%20balance&chs=180x180&choe=UTF-8&chld=L|2';
     $scope.instruments = [];
-    //$scope.ingredients = [];
     $scope.serverURL = "http://10.52.4.119:8080"
-    //$scope.serverURL = "http://10.52.4.100:8080"
     $scope.selectedQRCode;
     
     var config = {
