@@ -10,12 +10,12 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Welcome to MOBILE PANCAKES</title>
+        <title>Cooking for Chemists made easy</title>
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
         
-        <h1>Welcome to MOBILE PANCAKES</h1>
+        <h1>Cooking for Chemists made easy</h1>
         
         <div ng-app="webApp">
             
@@ -70,11 +70,15 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="x in recipes">
-                              <td><span ng-bind="x.name"></span></td> 
+                              <td><a href="#" ng-click="showRecipe(x.name)"><span ng-bind="x.name"></span></a></td> 
                               <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
                             </tr>
                           </tbody>
                         </table>
+                        <h2>Selected Recipe</h2>
+                        <p>
+                            {{selectedRecipe}}
+                        </p>
                     </div>
                 </div>
             </script>

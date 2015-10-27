@@ -1,6 +1,7 @@
 angular.module('recipesCtrl', [])
 .controller('recipesCtrl', function($scope, $http) {
     $scope.recipes = [];
+    $scope.selectedRecipe;
     $scope.serverURL = "http://10.52.4.119:8080";
     
     var config = {
@@ -19,6 +20,17 @@ angular.module('recipesCtrl', [])
                         alert("Error :" + response);
                 });
     };
+    
+    $scope.showRecipe = function(name) {
+        $http.get($scope.serverURL + '/recipe/' + name + '/load', config)
+                .then(
+                    function(response) {
+                        $scope.selectedRecipe = response.data;
+                    },    
+                    function(response) {
+                        alert("Error :" + response);
+                });
+    }
     
     $scope.showQRCode = function(qrCode) {
         var props = 'resizable= yes; status= no; scroll= no; help= no; center= yes;width=100;height=100;menubar=no;directories=no;location=no;modal=yes'
