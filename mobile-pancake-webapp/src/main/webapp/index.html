@@ -12,17 +12,26 @@
 
   </script>
 
-  <script src="recipes/recipes.js"></script>
-  <script src="ingredients/ingredients.js"></script>
-  <script src="instructions/instructions.js"></script>
+  <script src="controller/MainController.js"></script>
+
 </head>
 
 <body>
-  <div>
-    <recipes></recipes>
-    <ingredients></ingredients>
-    <instructions></instructions>
+  
+  <div ng-controller="MainController">
+    
+    <select name="recipeList" id="recipeList" ng-model="selectedRecipe">
+      <option ng-repeat="option in recipesModel.availableOptions" value="{{option.name}}">{{option.name}}</option>
+    </select>
+    
+    <select name="ingredientsList" id="ingredientsList" ng-model="ingredientsModel.ingredient">
+      <option ng-repeat="ingredient in ingredientsModel.ingredients" value="{{ingredient.name}}">{{ingredient.name}}</option>
+    </select>
+    
+    <div ng-bind="instructions"></div>
+    
   </div>
+  
 </body>
 
 </html>
