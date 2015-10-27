@@ -1,6 +1,8 @@
 package com.example.aritzman.mymobileapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    int QR_REQUEST = 0;
+    int PHOTO_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +95,44 @@ public class MainActivity extends AppCompatActivity {
             {
                 //Handle cancel
             }
+        }
+        else
+        if (requestCode == PHOTO_REQUEST)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                //super.onActivityResult(requestCode, resultCode, data);
+                Bitmap thumbnail = (Bitmap) intent.getExtras().get("data");
+            }
+        }
+    }
+
+    public void buttonOCRscanOnClick(View v)
+    {
+        try
+        {
+            Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(i, PHOTO_REQUEST);
+
+
+            String path = "empty";
+            ExifInterface e = new ExifInterface(path);
+            int ex = e.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+/*
+            TessBaseAPI tessapi = new TessBaseAPI();
+            //Here PATH is the path of the language files present in the sdcard for example
+            tessapi.init(PATH, lang);
+
+            tessapi.setImage(bitmap);
+            String txt = tessapi.getUTF8Text();
+            tessapi.end();
+*/
+
+        } catch (Exception e) {
+
         }
     }
 
