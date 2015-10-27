@@ -18,9 +18,6 @@ public class Ingredient {
 	@Column(name = "qr_code", length=2000)
 	private String qrCode;
 
-	@Column(name = "recipe_id")
-	private Integer recipeId;
-
 	public Integer getId() {
 		return id;
 	}
@@ -43,13 +40,5 @@ public class Ingredient {
 
 	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
-	}
-
-	public Integer getRecipeId() {
-		return recipeId;
-	}
-
-	public void setRecipeId(Integer recipeId) {
-		this.recipeId = recipeId;
 	}
 }

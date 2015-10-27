@@ -54,11 +54,13 @@ public class IngredientController {
 
 		JsonArray jsonList = new JsonArray();
 
-		for (Ingredient ingredient : dao.findAllByRecipeId(recipe.getId())) {
-			JsonObject jsonItem = new JsonObject();
-			jsonItem.addProperty("name", ingredient.getName());
-			jsonItem.addProperty("qrCode", BASE64_PREFIX + ingredient.getQrCode());
-			jsonList.add(jsonItem);
+		if (recipe != null) {
+			for (Ingredient ingredient : recipe.getIngredients()) {
+				JsonObject jsonItem = new JsonObject();
+				jsonItem.addProperty("name", ingredient.getName());
+				jsonItem.addProperty("qrCode", BASE64_PREFIX + ingredient.getQrCode());
+				jsonList.add(jsonItem);
+			}
 		}
 
 		return jsonList.toString();

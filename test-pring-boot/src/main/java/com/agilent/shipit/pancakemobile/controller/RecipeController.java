@@ -95,12 +95,16 @@ public class RecipeController {
 				List<Ingredient> list = new ArrayList<Ingredient>();
 				for (int i = 0, iL = ingredients.size(); i < iL; i++) {
 					JsonObject jsonIngredient = ingredients.get(i).getAsJsonObject();
-					Ingredient ingredient = new Ingredient();
-					ingredient.setName(jsonIngredient.get("name").getAsString());
-					ingredient.setQrCode(
-							Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(ingredient.getName())));
-					ingredient.setRecipeId(recipe.getId());
-					list.add(ingredientDAO.save(ingredient));
+					String ingredientName = jsonIngredient.get("name").getAsString();
+					Ingredient ingredient = ingredientDAO.findOneByName(ingredientName);
+					if (ingredient == null) {
+						ingredient = new Ingredient();
+						ingredient.setName(ingredientName);
+						ingredient.setQrCode(
+								Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(ingredient.getName())));
+						ingredient = ingredientDAO.save(ingredient);
+					}
+					list.add(ingredient);
 				}
 				recipe.setIngredients(list);
 

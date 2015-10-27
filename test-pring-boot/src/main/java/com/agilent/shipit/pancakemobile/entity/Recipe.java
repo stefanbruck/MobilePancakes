@@ -6,8 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Recipe {
@@ -19,14 +20,15 @@ public class Recipe {
 	@Column(name = "recipe_name")
 	private String name;
 
-	@Column(name = "recipe_text")
+	@Column(name = "recipe_text", length = 4000)
 	private String text;
 
 	@Column(name = "qr_code", length = 4000)
 	private String qrCode;
 
-	@OneToMany
-	@PrimaryKeyJoinColumn(name = "recipe_id")
+	@ManyToMany
+	@JoinTable(name = "recipe_ingredients", joinColumns = { @JoinColumn(name = "recipe_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "ingredient_id") })
 	private List<Ingredient> ingredients;
 
 	public Integer getId() {
