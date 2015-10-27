@@ -31,7 +31,7 @@
               <tbody>
                 <tr ng-repeat="x in instruments">
                   <td><span ng-bind="x.name"></span></td> 
-                  <td><a href="#" ng-click="showQRCode({{x.qrCode}})"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                  <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
                 </tr>
               </tbody>
             </table>
