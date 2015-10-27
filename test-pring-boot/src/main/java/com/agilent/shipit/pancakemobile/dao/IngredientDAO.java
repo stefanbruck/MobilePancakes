@@ -10,4 +10,6 @@ import com.agilent.shipit.pancakemobile.entity.Ingredient;
 @Repository
 public interface IngredientDAO extends CrudRepository<Ingredient, Integer> {
 	List<Ingredient> findAllByRecipeId(Integer recipeId);
+
+	Ingredient findOneByName(String name);
 }

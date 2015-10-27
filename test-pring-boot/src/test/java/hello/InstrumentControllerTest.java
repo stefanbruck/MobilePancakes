@@ -54,10 +54,10 @@ public class InstrumentControllerTest {
 				.andExpect(content().string(equalTo("[{\"name\":\"Balance\",\"qrCode\":\"cXJfY29kZQ==\"}]")));
 	}
 
-//	@Test
+	@Test
 	public void should_register_instrument() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/instrument/register").param("name", "Balance").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated()).andExpect(content().string(equalTo("cXJDb2Rl")));
+				.andExpect(status().isOk()).andExpect(content().string(equalTo("{\"qrCode\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQAAAACoxAthAAABbElEQVR42u3aQa6DIBCA4TEuuuwRPEqP9no0j/KO4LILIw8HSqfGppgIvMU/CyPot5sAA4g7HAKBQCAQCAQCgUAgp5FFXnFzbpKf2b+5h+mGQOqTa3x7yG31ngzaiN2/EEgTcpeQvIHoX7EhPQTSmsQBdnAQyP8hcbQ9lvwQSBFi5n3fmFNa5y0VIJACxFRJmtZ9yOTMwgoCKUDeYtn+9X0bCgIpQGy9Lp1fjvqpXkdbH7oiGCCQ6kRjDh9GCcW7Sz7se0IgLYh22HlfLmvXtF8lQSDlyRST95nJcxpTJ9uAQGqSWKKv0aXkjfP+bvEOgVQib1VSWAR0/nHvMwsrCORMstlTklAl+Xl/FOMhkMrE7MDrClTjkr582bSHQAqR/WP0vEtHEEhpspgqaZR0eAmBtCSxktfkDfN+3j0lCOR8Ym53PJejWsl/PK+EQEqT7e2OeIw+dp+2OiGQ0uRAQCAQCAQCgUAgEEgT8gfLBHpleB+XkQAAAABJRU5ErkJggg==\"}")));
 	}
 
 }

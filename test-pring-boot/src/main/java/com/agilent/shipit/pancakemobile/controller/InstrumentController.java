@@ -1,5 +1,8 @@
 package com.agilent.shipit.pancakemobile.controller;
 
+import static com.agilent.shipit.pancakemobile.controller.ControllerConstants.BASE64_PREFIX;
+import static com.agilent.shipit.pancakemobile.controller.ControllerConstants.JSON_CONTENT_TYPE;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.http.HTTPException;
 
@@ -25,7 +28,7 @@ public class InstrumentController {
 	@Autowired
 	private InstrumentDAO dao;
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = JSON_CONTENT_TYPE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public String list(HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", "*");
@@ -57,7 +60,7 @@ public class InstrumentController {
 				response.addHeader("Access-Control-Allow-Origin", "*");
 
 				JsonObject json = new JsonObject();
-				json.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
+				json.addProperty("qrCode", BASE64_PREFIX + instrument.getQrCode());
 				return json.toString();
 			} catch (Exception e) {
 				throw new HTTPException(HttpStatus.INTERNAL_SERVER_ERROR.value());
