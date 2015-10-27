@@ -1,9 +1,13 @@
 html {
     background-color: #e6e9e9;
-    /*background-image: url("https://farm6.staticflickr.com/5249/5349453359_d327684f31_b.jpg");
+    background-image: url("https://farm6.staticflickr.com/5249/5349453359_d327684f31_b.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: right;*/
+    background-position: right;
+}
+
+body {
+	width: 800px;	
 }
 
 table {

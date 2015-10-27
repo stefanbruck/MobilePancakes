@@ -1,9 +1,19 @@
 angular.module('mobilePancake')
 .controller('MainController', function ($http, $scope) {
-	$scope.serverurl = 'http://10.52.4.100:8080';
+	$scope.serverurl = SERVER_URL;
 	$scope.selectedInstrument = "Balance";
-    $scope.value = 123;
-    $scope.unit = 'g';
+    reset($scope);
+    
+    $scope.recipeChanged = function() {
+    	resetStatus($scope);
+    	$scope.selectedIngredient = null;
+    	$scope.value = null;
+    };
+    
+    $scope.ingredientChanged = function() {
+    	resetStatus($scope);
+    	$scope.value = null;
+    };
     
     $scope.send = function() {
     	if ($scope.selectedRecipe != null && $scope.selectedIngredient != null && $scope.value != null && $scope.unit != null) {
@@ -21,12 +31,14 @@ angular.module('mobilePancake')
 	        $http.post($scope.serverurl + '/instrument/writeMeasure', payload, config)
 	            .success(function(data, status, headers, config) {
 	            	console.log('Saved');
+	            	succeed($scope);
 	            })
 	            .error(function(data, status, headers, config) {
+	          	  	failed($scope, "Failed to send the measures.");
 	            	console.log('error');
 	            });
     	} else {
-    		alert('Please fill in all fields');
+    		failed($scope, 'Please fill in all fields');
     	}
     };
     
@@ -42,7 +54,8 @@ angular.module('mobilePancake')
         )
         .error(
           function(data, status, headers, config) {
-            alert('Error ' + status);
+        	  failed($scope, "Failed to load the recipes.");
+        	  console.log('Error ' + status);
           }
         );
   
@@ -58,7 +71,8 @@ angular.module('mobilePancake')
             )
             .error(
               function(data, status, headers, config) {
-                alert('Error ingredients: ' + status);
+            	  failed($scope, "Failed to load the ingredients.");
+            	  console.log('Error ingredients: ' + status);
               }
             );
         }
@@ -74,9 +88,36 @@ angular.module('mobilePancake')
             )
             .error(
               function(data, status, headers, config) {
-                alert('Error ' + status);
+            	  failed($scope, "Failed to load the instructions.");
+            	  console.log('Error loading the instructions' + status);
               }
             ); 
         }
     });
 });
+
+function reset(scope) {
+	scope.selectedIngredient = null;
+	scope.selectedRecipe = null;
+	scope.value = null;
+    scope.unit = 'g';
+    resetStatus(scope);
+}
+
+function resetStatus(scope) {
+    scope.failed = false;
+    scope.success = false;
+    scope.errorMsg = ' It did not work :(';
+}
+
+function failed(scope, msg) {
+	scope.failed = true;
+	scope.success = false;
+	scope.errorMsg = msg;
+}
+
+function succeed(scope) {
+	scope.failed = false;
+	scope.success = true;
+	scope.errorMsg = null;
+}

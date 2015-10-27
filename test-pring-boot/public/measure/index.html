@@ -2,68 +2,66 @@
 <html ng-app="mobilePancake">
 
 <head>
-<meta charset="UTF-8">
-<title>Mobile Pancake</title>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-
-<script type="text/javascript">
-	// Create the App
-	angular.module('mobilePancake', []);
-</script>
-
-<script src="controller/MainController.js"></script>
-<link rel="stylesheet"  type="text/css" ref="styles/style.css" >
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-	integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-	crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
-	integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX"
-	crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-	integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
-	crossorigin="anonymous"></script>
+	<meta charset="UTF-8">
+	<title>Mobile Pancake</title>
+	<script src="/angular.min.js"></script>
+	<script type="text/javascript" src="/jquery-2.1.1.min.js" ></script>
+	
+	<script type="text/javascript">
+		var SERVER_URL = "http://10.52.4.100:8080";
+		// Create the App
+		angular.module('mobilePancake', []);
+	</script>
+	
+	<script src="controller/MainController.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css" >
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
+	
+	<h1>Let's cook!</h1>
 
 	<div ng-controller="MainController">
 
 		<div>
-			<input type="TEXT" ng-model="serverurl"></input>
-		</div>
-
-		<div>
-			<select name="recipeList" id="recipeList" ng-model="selectedRecipe">
-				<option ng-repeat="option in recipesModel.availableOptions"
-					value="{{option.name}}">{{option.name}}</option>
-			</select> <select name="ingredientsList" id="ingredientsList"
-				ng-model="selectedIngredient">
-				<option ng-repeat="ingredient in ingredientsModel.ingredients"
-					value="{{ingredient.name}}">{{ingredient.name}}</option>
+			<span>Choose your recipe: </span>
+			<select name="recipeList" id="recipeList" ng-model="selectedRecipe" ng-change="recipeChanged()">
+				<option ng-repeat="option in recipesModel.availableOptions" value="{{option.name}}">{{option.name}}</option>
 			</select>
 		</div>
 		
-		<div ng-bind="instructions"></div>
-
 		<div>
-			<span><input type="NUMBER" ng-model="value"></input> g</span>
+			<div>
+				<h2>Instructions</h2>
+			</div>
+			<div>
+				<span class="left">
+					<div class="instruction" ng-bind="instructions"></div>
+				</span>
+				<span class="right">
+					<div>
+						<span>Choose an ingredient: </span>
+						<select name="ingredientsList" id="ingredientsList" ng-model="selectedIngredient" ng-change="ingredientChanged()">
+							<option ng-repeat="ingredient in ingredientsModel.ingredients" value="{{ingredient.name}}">{{ingredient.name}}</option>
+						</select>
+					</div>
+					<div>
+						<span>Weight: </span><input class="number" type="number" ng-model="value"></input><span> g</span>
+					</div>
+					<div>
+						<input type="button" value="Send" ng-click="send()" class="btn btn-lg btn-primary"></input>
+					</div>
+				</span>
+			</div>
 		</div>
-
-		<div>
-			<input type="button" value="Send" ng-click="send()"></input>
-		</div>
+		
+		<div class="alert alert-success" role="alert" ng-show="success"><strong>Well done!</strong> Data sent to the server.</div>
+		<div class="alert alert-danger" role="alert" ng-show="failed"><strong>Oops!</strong> <span ng-bind="errorMsg"></span></div>
+	
 	</div>
 
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>
