@@ -1,28 +1,37 @@
 angular.module('mobilePancake')
 .controller('MainController', function ($http, $scope) {
+	$scope.serverurl = 'http://10.52.4.100:8080';
+	$scope.selectedInstrument = "Balance";
     $scope.value = 123;
     $scope.unit = 'g';
     
-    $scope.send = function(newValue) {
-        var payload = 'recipeName=' + $scope.selectedRecipe + '&selectedIngredient=' + $scope.selectedIngredient + '&value='+ $scope.value + '&unit=' + $scope.unit;
-        
-        var config = {
-            headers : {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            }
-        };
-        
-      $http.post('http://10.52.4.100:8080/measures/save', payload, config)
-        .success(function(data, status, headers, config) {
-          alert('Saved');
-        })
-        .error(function(data, status, headers, config) {
-          alert('error');
-        });
+    $scope.send = function() {
+    	if ($scope.selectedRecipe != null && $scope.selectedIngredient != null && $scope.value != null && $scope.unit != null) {
+	        var payload = {};
+	        payload.instrumentName = $scope.selectedInstrument;
+	        payload.ingredientName = $scope.selectedIngredient;
+	        payload.value = $scope.value;
+	        
+	        var config = {
+		            headers : {
+		                'Content-Type': 'application/json;charset=UTF-8',
+		            }
+		        };
+	        
+	        $http.post($scope.serverurl + '/instrument/writeMeasure', payload, config)
+	            .success(function(data, status, headers, config) {
+	            	console.log('Saved');
+	            })
+	            .error(function(data, status, headers, config) {
+	            	console.log('error');
+	            });
+    	} else {
+    		alert('Please fill in all fields');
+    	}
     };
     
 
-    $http.get('http://10.52.4.100:8080/recipe/list')
+    $http.get($scope.serverurl + '/recipe/list')
         .success(
           function(data, status, headers, config) {
             $scope.selectedRecipe = null;
@@ -39,7 +48,7 @@ angular.module('mobilePancake')
   
     $scope.$watch('selectedRecipe', function(selectedRecipe) {
         if (selectedRecipe) {
-          $http.get('http://10.52.4.100:8080/ingredient/list/' + selectedRecipe)
+          $http.get($scope.serverurl + '/ingredient/list/' + selectedRecipe)
             .success(
               function(data, status, headers, config) {
                 $scope.ingredientsModel = {
