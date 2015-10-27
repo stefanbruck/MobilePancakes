@@ -1,5 +1,6 @@
 package com.agilent.shipit.pancakemobile.controller;
 
+import static com.agilent.shipit.pancakemobile.controller.ControllerConstants.BASE64_PREFIX;
 import static com.agilent.shipit.pancakemobile.controller.ControllerConstants.JSON_CONTENT_TYPE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -37,7 +38,7 @@ public class IngredientController {
 		for (Ingredient ingredient : dao.findAll()) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", ingredient.getName());
-			jsonItem.addProperty("qrCode", ingredient.getQrCode());
+			jsonItem.addProperty("qrCode", BASE64_PREFIX + ingredient.getQrCode());
 			jsonList.add(jsonItem);
 		}
 
@@ -56,7 +57,7 @@ public class IngredientController {
 		for (Ingredient ingredient : dao.findAllByRecipeId(recipe.getId())) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", ingredient.getName());
-			jsonItem.addProperty("qrCode", ingredient.getQrCode());
+			jsonItem.addProperty("qrCode", BASE64_PREFIX + ingredient.getQrCode());
 			jsonList.add(jsonItem);
 		}
 

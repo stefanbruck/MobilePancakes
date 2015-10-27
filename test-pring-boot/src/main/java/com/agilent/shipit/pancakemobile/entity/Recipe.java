@@ -22,7 +22,7 @@ public class Recipe {
 	@Column(name = "recipe_text")
 	private String text;
 
-	@Column(name = "qr_code", length=2000)
+	@Column(name = "qr_code", length = 4000)
 	private String qrCode;
 
 	@OneToMany

@@ -75,7 +75,7 @@ public class RecipeController {
 		}
 	}
 
-	@RequestMapping(value = "/save", method = POST)
+	@RequestMapping(value = "/save", method = POST, produces = JSON_CONTENT_TYPE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public String save(@RequestBody String payload, HttpServletResponse response) {
 		JsonObject jsonRecipe = parseRecipePayload(payload);

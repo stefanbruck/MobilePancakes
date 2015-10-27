@@ -38,7 +38,7 @@ public class InstrumentController {
 		for (Instrument instrument : allInstruments) {
 			JsonObject jsonItem = new JsonObject();
 			jsonItem.addProperty("name", instrument.getName());
-			jsonItem.addProperty("qrCode", "data:image/png;base64," + instrument.getQrCode());
+			jsonItem.addProperty("qrCode", BASE64_PREFIX + instrument.getQrCode());
 			jsonList.add(jsonItem);
 		}
 
