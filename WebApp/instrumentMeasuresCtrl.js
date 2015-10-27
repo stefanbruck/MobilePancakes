@@ -1,7 +1,7 @@
 angular.module('instrumentMeasuresCtrl', [])
 .controller('instrumentMeasuresCtrl', function($scope, $http) {
     $scope.instrumentMeasures = [];
-    $scope.serverURL = "http://10.52.4.119:8080";
+    $scope.serverURL = "http://10.52.4.100:8080";
     
     var config = {
 					headers : {

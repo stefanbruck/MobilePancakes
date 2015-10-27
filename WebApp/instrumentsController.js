@@ -2,7 +2,7 @@ angular.module('instrumentsController', [])
 .controller('instrumentsController', function($scope, $http) {
     $scope.newInstrumentName = "";
     $scope.instruments = [];
-    $scope.serverURL = "http://10.52.4.119:8080"
+    $scope.serverURL = "http://10.52.4.100:8080"
     
     var config = {
 					headers : {
