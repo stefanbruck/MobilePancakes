@@ -4,6 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="TabsCtrl.js"></script>
     <script src="instrumentsController.js"></script>
+    <script src="ingredientsCtrl.js"></script>
     
     <head>
         <meta charset="utf-8">
@@ -64,13 +65,23 @@
 
             <script type="text/ng-template" id="three.tpl.html">
                 <div id="viewThree">
-                    <h1>Ingredients</h1>
-                    <input type="button" ng-click="refreshIngredients()" value="Refresh" />
-                    <ul>
-                        <li ng-repeat="x in ingredients">
-                            {{ x.amount + " " + x.unit + " " + x.name }}
-                        </li>
-                    </ul>
+                    <div ng-controller="ingredientsCtrl">
+                        <h1>Ingredients</h1>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>QR Code</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in ingredients">
+                              <td><span ng-bind="x.name"></span></td> 
+                              <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
                 </div>
             </script>
         </div>

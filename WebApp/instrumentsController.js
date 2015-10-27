@@ -3,7 +3,6 @@ angular.module('instrumentsController', [])
     $scope.newInstrumentName = "";
     $scope.instruments = [];
     $scope.serverURL = "http://10.52.4.119:8080"
-    $scope.selectedQRCode;
     
     var config = {
 					headers : {
@@ -43,17 +42,6 @@ angular.module('instrumentsController', [])
                 });
         
     }
-    
-    $scope.refreshIngredients = function() {    
-        $http.get($scope.serverURL + '/ingredient/list', config)
-                .then(
-                    function(response) {
-                        alert("hello" + response);
-                    },    
-                    function(response) {
-                        alert("Error :" + response);
-                });
-    };
     
     $scope.showQRCode = function(qrCode) {
         var props = 'resizable= yes; status= no; scroll= no; help= no; center= yes;width=100;height=100;menubar=no;directories=no;location=no;modal=yes'
