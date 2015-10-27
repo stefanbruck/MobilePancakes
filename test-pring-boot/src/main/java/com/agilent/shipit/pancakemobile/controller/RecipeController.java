@@ -87,7 +87,7 @@ public class RecipeController {
 			try {
 				Recipe recipe = new Recipe();
 				recipe.setName(name);
-				recipe.setText("Directions");
+				recipe.setText(jsonRecipe.get("content").getAsString());
 				recipe.setQrCode(Base64.encodeBase64String(QRCodeUtils.generateQRCodeImage(payload)));
 
 				JsonArray ingredients = jsonRecipe.get("ingredients").getAsJsonArray();
