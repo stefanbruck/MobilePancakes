@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="TabsCtrl.js"></script>
+    <script src="instrumentsController.js"></script>
+    <script src="ingredientsCtrl.js"></script>
+    <script src="recipesCtrl.js"></script>
+    <script src="instrumentMeasuresCtrl.js"></script>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Cooking for Chemists made easy</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        
+        <h1>Cooking for Chemists made easy</h1>
+        
+        <div ng-app="webApp">
+            
+            
+            <div id="tabs" ng-controller="TabsCtrl">
+                <ul>
+                    <li ng-repeat="tab in tabs" 
+                        ng-class="{active:isActiveTab(tab.url)}" 
+                        ng-click="onClickTab(tab)">{{tab.title}}</li>
+                </ul>
+                <div id="mainView">
+                    <div ng-include="currentTab"></div>
+                </div>
+            </div>
+            <script type="text/ng-template" id="one.tpl.html">
+                <div id="viewOne">
+                    <div ng-controller="instrumentsController">
+                        <h2>Add a new Instrument</h2>
+                        Instrument Name:
+                        <input type="text" ng-model="newInstrumentName"
+                               data-ng-keypress="onInstrumentNameKeyPress($event)">
+                        <input type="button" ng-click="registerInstrument()" value="Register" />
+                        <h2>Known Instruments</h2>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>QR Code</th>
+                                <th>Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in instruments">
+                              <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                              <td><span ng-bind="x.name"></span></td> 
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="two.tpl.html">
+                <div id="viewTwo">
+                    <div ng-controller="recipesCtrl">
+                        <h1>Recipes</h1>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>QR Code</th>
+                                <th>Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in recipes">
+                              <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                              <td><a href="#" ng-click="showRecipe(x.name)"><span ng-bind="x.name"></span></a></td> 
+                            </tr>
+                          </tbody>
+                        </table>
+                        <h2>Selected Recipe</h2>
+                        <p>
+                            {{selectedRecipe}}
+                        </p>
+                    </div>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="three.tpl.html">
+                <div id="viewThree">
+                    <div ng-controller="ingredientsCtrl">
+                        <h1>Ingredients</h1>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>QR Code</th>
+                                <th>Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in ingredients">
+                              <td><a href="#" ng-click="showQRCode(x.qrCode)"><img ng-src="{{x.qrCode}}" class="qrCodeTb"></img></a></td>
+                              <td><span ng-bind="x.name"></span></td> 
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="four.tpl.html">
+                <div id="viewThree">
+                    <div ng-controller="instrumentMeasuresCtrl">
+                        <h1>Instrument Measurement</h1>
+                        <table>
+                          <thead>
+                            <tr>
+                                <th>Instrument</th>
+                                <th>Ingredient</th>
+                                <th>Value</th>
+                                <th>Timestamp</th>
+                                <th>Read</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="x in instrumentMeasures">
+                              <td><span ng-bind="x.instrumentName"></span></td> 
+                              <td><span ng-bind="x.ingredientName"></span></td> 
+                              <td><span ng-bind="x.value"></span></td> 
+                              <td><span ng-bind="x.timestamp"></span></td> 
+                              <td><span ng-bind="x.read"></span></td> 
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </script>
+        </div>
+    </body>
+</html>

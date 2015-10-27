@@ -66,7 +66,7 @@ angular.module('mobilePancake')
   
     $scope.$watch('selectedRecipe', function(selectedRecipe) {
         if (selectedRecipe) {
-          $http.get('http://10.52.4.100:8080/recipe/' + selectedRecipe + '/load')
+          $http.get($scope.serverurl + '/recipe/' + selectedRecipe + '/load')
             .success(
               function(data, status, headers, config) {
                 $scope.instructions = data.content;
