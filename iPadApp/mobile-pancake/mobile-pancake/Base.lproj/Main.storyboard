@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="mobile_pancake" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No QR Code is detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Th3-eq-eDK">
+                                <rect key="frame" x="0.0" y="560" width="421" height="40"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <accessibility key="accessibilityConfiguration" identifier="messageLabel"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="8Pm-22-QLm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cga-ys-40K">
+                                <rect key="frame" x="496" y="560" width="104" height="40"/>
+                                <animations/>
+                                <state key="normal" title="Capture"/>
+                                <connections>
+                                    <action selector="sendDataToServer" destination="vXZ-lx-hvc" eventType="touchUpInside" id="2EL-iF-BB1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Th3-eq-eDK" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="4Ii-vl-CW9"/>
+                            <constraint firstItem="Th3-eq-eDK" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="5eC-g6-tOH"/>
+                            <constraint firstItem="cga-ys-40K" firstAttribute="leading" secondItem="Th3-eq-eDK" secondAttribute="trailing" constant="75" id="6s4-Ug-Psa"/>
+                            <constraint firstItem="cga-ys-40K" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="Iq5-sS-BSA"/>
+                            <constraint firstAttribute="trailing" secondItem="cga-ys-40K" secondAttribute="trailing" id="nfF-as-f8D"/>
+                            <constraint firstAttribute="trailing" secondItem="Th3-eq-eDK" secondAttribute="trailing" constant="179" id="qWu-pd-4NQ"/>
+                            <constraint firstItem="cga-ys-40K" firstAttribute="top" secondItem="Th3-eq-eDK" secondAttribute="top" id="xGf-HG-JQl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageLabel" destination="Th3-eq-eDK" id="2pq-U8-M1y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="445" y="424"/>
+        </scene>
+    </scenes>
+</document>
